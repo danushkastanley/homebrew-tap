@@ -3,7 +3,6 @@
 class KubectlMemlens < Formula
   desc "Kubectl plugin that explains why Pod memory is high"
   homepage "https://github.com/danushkastanley/KubeMemLens"
-  version "1.0.5"
   license "Apache-2.0"
 
   on_macos do

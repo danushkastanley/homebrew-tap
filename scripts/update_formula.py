@@ -30,7 +30,6 @@ TEMPLATE = '''# Written by scripts/update_formula.py from the signed checksums o
 class KubectlMemlens < Formula
   desc "Kubectl plugin that explains why Pod memory is high"
   homepage "{repository}"
-  version "{version}"
   license "Apache-2.0"
 
   on_macos do
@@ -91,10 +90,12 @@ def latest_stable_tag():
 
 
 def committed_tag():
-    found = re.search(r'^  version "([^"]+)"$', FORMULA.read_text(), re.M)
-    if not found or not STABLE_TAG.fullmatch("v" + found.group(1)):
-        fail(f"{FORMULA} names no stable version")
-    return "v" + found.group(1)
+    # Homebrew reads the version from the archive address, so the formula has
+    # no version line of its own.
+    tags = set(re.findall(r"/releases/download/([^/]+)/", FORMULA.read_text()))
+    if len(tags) != 1 or not STABLE_TAG.fullmatch(min(tags)):
+        fail(f"{FORMULA} does not name exactly one stable release: {sorted(tags)}")
+    return min(tags)
 
 
 def download(tag, name, directory):
@@ -130,7 +131,7 @@ def signed_checksums(tag):
 def render(tag):
     version = tag[1:]
     checksums = signed_checksums(tag)
-    values = {"repository": REPOSITORY, "version": version}
+    values = {"repository": REPOSITORY}
     for platform in PLATFORMS:
         name = f"kube-memlens_{version}_{platform}.tar.gz"
         if name not in checksums:
