@@ -1,0 +1,50 @@
+name: Update formula
+
+# Moves the formula to the latest stable KubeMemLens release. It uses only this
+# repository's own token.
+on:
+  schedule:
+    # every 4 hours
+    - cron: '35 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-formula
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
+        with:
+          cosign-release: v3.1.2
+      - name: Render the formula for the latest stable release
+        run: python3 scripts/update_formula.py
+      - name: Commit a changed formula and start its tests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- Formula/kubectl-memlens.rb; then
+            echo "The formula is current."
+            exit 0
+          fi
+          version=$(sed -n 's/^  version "\(.*\)"$/\1/p' Formula/kubectl-memlens.rb)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --quiet --message "kubectl-memlens ${version}" -- Formula/kubectl-memlens.rb
+          git push --quiet
+          # A push made with the workflow token starts no workflow, so the
+          # install tests are started by hand for the new formula.
+          gh workflow run tests.yml --ref "${GITHUB_REF_NAME}"
