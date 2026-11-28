@@ -7,23 +7,23 @@ class KubectlMemlens < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.5/kube-memlens_1.0.5_darwin_arm64.tar.gz"
-      sha256 "fff17a6875e5d2c32323c84381df7ffa808ab8607bb475cc83466708d855aab6"
+      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.6/kube-memlens_1.0.6_darwin_arm64.tar.gz"
+      sha256 "97283a7031bf96ad559c93c953e4f76ac1a6dbc631ceebb30ca9083b4721393c"
     end
     on_intel do
-      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.5/kube-memlens_1.0.5_darwin_amd64.tar.gz"
-      sha256 "a0ae93e0de8df0fe32d0c74b0c17d8360783398f70292497a64e88f23f64d13f"
+      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.6/kube-memlens_1.0.6_darwin_amd64.tar.gz"
+      sha256 "732953c0c88a5e6bec151af807ff64d1aee6a31ff5666cc79a7d7c25a460d7a3"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.5/kube-memlens_1.0.5_linux_arm64.tar.gz"
-      sha256 "764338f49ef532b9ba295cf00a45695e055915b3f984b257ff18a8e369dbbee5"
+      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.6/kube-memlens_1.0.6_linux_arm64.tar.gz"
+      sha256 "5abf16ff79fc98f6aef9336ac4a85f9f0db4ebc74d0cc0569e393f284fb8934b"
     end
     on_intel do
-      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.5/kube-memlens_1.0.5_linux_amd64.tar.gz"
-      sha256 "5668718e4dccbdd31b4b2da66805f7ad2344cb587ef9799f53618d2c98936d82"
+      url "https://github.com/danushkastanley/KubeMemLens/releases/download/v1.0.6/kube-memlens_1.0.6_linux_amd64.tar.gz"
+      sha256 "dc3db8e220130f67dd2ef0c937ec157686b62c09f0aa8cc6925e43672a20fd9f"
     end
   end
 
